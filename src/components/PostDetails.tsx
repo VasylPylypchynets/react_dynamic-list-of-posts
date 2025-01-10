@@ -10,6 +10,7 @@ type PostDetailsProps = {
   comments: Comment[];
   isGetCommentsError: boolean;
   isLoadingComments: boolean;
+  selectedPostId: number | null;
   onComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 };
 
@@ -18,6 +19,7 @@ export function PostDetails({
   comments,
   isGetCommentsError,
   isLoadingComments,
+  selectedPostId,
   onComments,
 }: PostDetailsProps) {
   const [newCommentFormIsVisible, setNewCommentFormIsVisible] = useState(false);
@@ -34,11 +36,9 @@ export function PostDetails({
       prevComments.filter(comment => comment.id !== commentId),
     );
 
-    deleteComment(commentId)
-      .then(() => {})
-      .catch(() => {
-        onComments(currentComments);
-      });
+    deleteComment(commentId).catch(() => {
+      onComments(currentComments);
+    });
   }
 
   return (
@@ -108,7 +108,7 @@ export function PostDetails({
 
         {newCommentFormIsVisible && (
           <NewCommentForm
-            selectedPostId={selectedPost?.id}
+            selectedPostId={selectedPostId}
             onComments={onComments}
           />
         )}

@@ -26,7 +26,7 @@ export const App = () => {
   const [isLoadingComments, setIsLoadingComments] = useState(false);
 
   const userPostLeng: number = userPosts.length;
-  const userHasPosts: boolean =
+  const userHasNoPosts: boolean =
     !isGetPostsError &&
     userPostLeng === 0 &&
     selectedUserId !== null &&
@@ -116,7 +116,7 @@ export const App = () => {
                   />
                 )}
 
-                {userHasPosts && (
+                {userHasNoPosts && (
                   <div className="notification is-warning" data-cy="NoPostsYet">
                     No posts yet
                   </div>
@@ -142,7 +142,8 @@ export const App = () => {
                   comments={comments}
                   isGetCommentsError={isGetCommentsError}
                   isLoadingComments={isLoadingComments}
-                  key={selectedPost?.id}
+                  selectedPostId={selectedPostId}
+                  key={selectedPostId}
                   onComments={setComments}
                 />
               )}

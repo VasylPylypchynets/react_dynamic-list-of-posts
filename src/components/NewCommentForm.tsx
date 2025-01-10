@@ -4,7 +4,7 @@ import { addComment } from '../api/request';
 import { Comment } from '../types/Comment';
 
 type NewCommentFormProps = {
-  selectedPostId: number | undefined;
+  selectedPostId: number | null;
   onComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 };
 
@@ -19,6 +19,7 @@ export function NewCommentForm({
   const [email, setEmail] = useState('');
   const [body, setBody] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [addCommentError, setAddCommentError] = useState(false);
 
   function validateForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -46,6 +47,7 @@ export function NewCommentForm({
       };
 
       setIsSubmitting(true);
+      setAddCommentError(false);
 
       addComment(comment)
         .then((response: Comment) => {
@@ -60,7 +62,9 @@ export function NewCommentForm({
           onComments(comments => [...comments, newComment]);
           setBody('');
         })
-        .catch(() => {})
+        .catch(() => {
+          setAddCommentError(true);
+        })
         .finally(() => {
           setIsSubmitting(false);
         });
@@ -207,6 +211,12 @@ export function NewCommentForm({
           </button>
         </div>
       </div>
+
+      {addCommentError && (
+        <div className="notification is-danger" data-cy="CommentsError">
+          Something went wrong
+        </div>
+      )}
     </form>
   );
 }
