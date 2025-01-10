@@ -42,7 +42,9 @@ export function PostsList({
                     className={classNames('button', 'is-link', {
                       'is-light': !(selectedPostId === post.id),
                     })}
-                    onClick={() => onSelectedPostId(post.id)}
+                    onClick={() =>
+                      onSelectedPostId(id => (id === post.id ? null : post.id))
+                    }
                   >
                     {selectedPostId === post.id ? 'Close' : 'Open'}
                   </button>

@@ -24,6 +24,8 @@ export function PostDetails({
 
   const hasCommentsLoadingError = isGetCommentsError && !isLoadingComments;
   const hasNoComments = comments.length === 0 && !isLoadingComments;
+  const shouldShowWriteButton =
+    !isGetCommentsError && !isLoadingComments && !newCommentFormIsVisible;
 
   function handleDeleteComment(commentId: number) {
     const currentComments = [...comments];
@@ -52,21 +54,17 @@ export function PostDetails({
 
         <div className="block">
           {isLoadingComments && <Loader />}
-
           {hasCommentsLoadingError && (
             <div className="notification is-danger" data-cy="CommentsError">
               Something went wrong
             </div>
           )}
-
-          {hasNoComments && (
+          {hasNoComments && !isGetCommentsError && (
             <p className="title is-4" data-cy="NoCommentsMessage">
               No comments yet
             </p>
           )}
-
           <p className="title is-4">Comments:</p>
-
           {!isLoadingComments &&
             comments.map(comment => {
               return (
@@ -96,8 +94,7 @@ export function PostDetails({
                 </article>
               );
             })}
-
-          {!newCommentFormIsVisible && (
+          {shouldShowWriteButton && (
             <button
               data-cy="WriteCommentButton"
               type="button"
